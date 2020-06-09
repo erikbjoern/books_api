@@ -1,9 +1,13 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', (req, res) => {
-  res.json({books: [{title: 'Nice book', author: 'Erik'}]});
+/* GET books listing. */
+router.get("/", (req, res) => {
+  const bookCollection = [
+    { title: "Nice book", author: "Erik" },
+    { title: "Fine book", author: "Someone" },
+  ];
+  res.json({ books: bookCollection });
 });
 
 module.exports = router;
