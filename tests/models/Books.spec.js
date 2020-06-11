@@ -2,44 +2,57 @@ const {
   sequelize,
   dataTypes,
   checkModelName,
-  checkPropertyExists
-} = require('sequelize-test-helpers')
+  checkPropertyExists,
+} = require("sequelize-test-helpers");
 
-const Book = require('../../models/book')
-const { factory, expect } = require('../test_helpers')
+const Book = require("../../models/book");
+const Author = require("../../models/author");
+const { factory, expect } = require("../test_helpers");
 
-describe('Book', () => {
-  const DescribedModel = Book(sequelize, dataTypes)
-  const subject = new DescribedModel()
+describe("Book", () => {
+  const DescribedModel = Book(sequelize, dataTypes);
+  const subject = new DescribedModel();
 
-  checkModelName(DescribedModel)('Book')
-  checkPropertyExists(subject)('title')
+  checkModelName(DescribedModel)("Book");
+  checkPropertyExists(subject)("title");
 
-  describe('constraints', () => {
+  describe("constraints", () => {
     it("rejects null value for title", async () => {
       try {
-        await factory.create('Book', {
-          title: null
-        })
-        expect.fail()
+        await factory.create("Book", {
+          title: null,
+        });
+        expect.fail();
       } catch (error) {
-        expect(error.errors)
-          .to.containSubset([{ message: 'Book.title cannot be null'}])
+        expect(error.errors).to.containSubset([
+          { message: "Book.title cannot be null" },
+        ]);
       }
-    })
-  })
-  
+    });
+  });
+
   describe("validations", () => {
     it("rejects empty string for title", async () => {
       try {
-        await factory.create('Book', {
-          title: ""
-        })
-        expect.fail()
+        await factory.create("Book", {
+          title: "",
+        });
+        expect.fail();
       } catch (error) {
-        expect(error)
-          .to.include({ message: 'Validation error: You need to set a title!'})
+        expect(error).to.include({
+          message: "Validation error: You need to set a title!",
+        });
       }
-    })
-  })
-})
+    });
+  });
+
+  describe("associations", () => {
+    before(() => {
+      DescribedModel.associate({ Author });
+    });
+
+    it("defines a belongsTo association with Author", () => {
+      expect(DescribedModel.belongsTo).to.have.been.calledWith(Author);
+    });
+  });
+});

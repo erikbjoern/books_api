@@ -1,6 +1,5 @@
 const app = require("../app");
 const supertest = require("supertest");
-// const expect = require("chai").expect;
 const { factory, expect } = require("./test_helpers");
 const jsonResponse = require("./jsonResponse");
 
@@ -38,8 +37,8 @@ describe("GET /api/v1/books", () => {
   it("responds with a collection of books", () => {
     const expectedBody = {
       books: [
-        { id: 1, title: "Nice book" },
-        { id: 2, title: "Fine book" },
+        { id: 1, title: "Nice book", author: { name: "Erik" } },
+        { id: 2, title: "Fine book", author: { name: "Someone" } },
       ],
     };
     expect(jsonResponse(response)).to.equal(JSON.stringify(expectedBody));
