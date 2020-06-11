@@ -1,3 +1,5 @@
+const models = require('../models')
+
 const booksSerializer = {
   index() {
     return {
@@ -6,7 +8,7 @@ const booksSerializer = {
         {
           model: models.Author,
           as: 'author', 
-          attributes: { exclude: ['id', 'createdAt', 'publishedAt']}
+          attributes: { exclude: ['id', 'createdAt', 'updatedAt']}
         }
       ]
     }

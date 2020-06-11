@@ -15,9 +15,13 @@ after((done) => {
 });
 
 beforeEach(async () => {
+  const Author = await factory.create("Author",
+    { id: 1, name: "Erik" }
+  );
+  
   await factory.createMany("Book", 2, [
-    { id: 1, title: "Nice book" },
-    { id: 2, title: "Fine book" },
+    { id: 1, title: "Nice book", authorId: Author.id },
+    { id: 2, title: "Fine book", authorId: Author.id },
   ]);
 });
 
@@ -38,7 +42,7 @@ describe("GET /api/v1/books", () => {
     const expectedBody = {
       books: [
         { id: 1, title: "Nice book", author: { name: "Erik" } },
-        { id: 2, title: "Fine book", author: { name: "Someone" } },
+        { id: 2, title: "Fine book", author: { name: "Erik" } },
       ],
     };
     expect(jsonResponse(response)).to.equal(JSON.stringify(expectedBody));
