@@ -16,7 +16,7 @@ after((done) => {
 
 beforeEach(async () => {
   const Author = await factory.create("Author",
-    { id: 1, name: "Erik" }
+    { id: 1, name: "Erik", email: "erik@mail.com", password: "password" }
   );
   
   await factory.createMany("Book", 2, [
@@ -44,7 +44,7 @@ describe("GET /api/v1/books", () => {
     beforeEach(async () => {
       await request
         .post("/api/v1/auth/login")
-        .send({ email: "user@mail.com", password: "password" })
+        .send({ name: "Erik" })
         .then((response) => {
           token = response.body.token
         })
