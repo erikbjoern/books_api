@@ -30,9 +30,9 @@ afterEach(async () => {
 })
 
 describe("GET /api/v1/books", () => {
-  describe.only("for non-authenticated users", () => {
+  xdescribe("for non-authenticated users", () => {
     beforeEach(async () => {
-      response = await request.get("/api/v1/books")
+      response = await request.get("/api/v1/books").send({ email: "erik@mail.com", password: "wrong" })
     });
 
     it("should respond with 401", () => {
@@ -44,7 +44,7 @@ describe("GET /api/v1/books", () => {
     beforeEach(async () => {
       await request
         .post("/api/v1/auth/login")
-        .send({ name: "Erik" })
+        .send({ email: "erik@mail.com", password: "password" })
         .then((response) => {
           token = response.body.token
         })

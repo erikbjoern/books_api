@@ -11,15 +11,15 @@ const authentication = require('./routes/authentication')
 
 const app = express();
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
-app.use(cors())
-app.use(passport.initialize)
+app.use(passport.initialize())
 
 require('./passport-config')(passport)
 
-app.use('/api/v1/books', books); //passport.authenticate("jwt", { session: false }, )
+app.use('/api/v1/books', passport.authenticate("jwt", { session: false }), books);
 app.use('/api/v1/auth', authentication)
 
 module.exports = app;
